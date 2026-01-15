@@ -107,7 +107,6 @@ def normalise_sequence(seq: str) -> str:
     return seq.upper()
 
 
-
 class NucleotideSequence(ABC):
     id: str
     seq: str
