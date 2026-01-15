@@ -1,5 +1,7 @@
 # create the superclass
 from typing import Iterator
+from abc import ABC
+from dataclasses import dataclass
 class BioSequence:
 
     # constructor sets  shared attributes
@@ -100,3 +102,33 @@ class ProteinSequence(BioSequence):
     # polymorphic method to get protein length
     def get_protein_len(self) -> int:
         return len(self.seq)
+
+def normalise_sequence(seq: str) -> str:
+    return seq.upper()
+
+
+
+class NucleotideSequence(ABC):
+    id: str
+    seq: str
+
+@dataclass(frozen=True)
+class DNASequence(NucleotideSequence):
+    id: str
+    seq: str
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "seq", normalise_sequence(self.seq))
+
+@dataclass(frozen=True)
+class RNASequence(NucleotideSequence):
+    id: str
+    seq: str
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "seq", normalise_sequence(self.seq))
+
+    def calc_gc_content(seq: NucleotideSequence) -> float:
+        gc_count: int = seq.seq.count("G") + seq.seq.count("C")
+        return gc_count / len(seq.seq)
+
