@@ -24,4 +24,4 @@ class FastaFile:
                 if line.startswith('>'):
                     id = line.rstrip().lstrip('>')
                     seq = next(filehandle).rstrip()
-                    yield sequence_class(id, seq)
+                yield sequence_class(id, seq)
