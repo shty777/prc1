@@ -1,4 +1,5 @@
 from typing import Type, Iterator, TypeVar
+import typing
 
 T = TypeVar("T")
 # class to parse a fasta file    
@@ -17,11 +18,10 @@ class FastaFile:
     # yields so we can iterate all the way over the file
     # and return a DNASequence for every pair of lines
     # this function now takes the sequence class as a parameter
-    @typing.no_type_check
     def get_seq_record(self, sequence_class: Type[T]) -> Iterator[T]:
         with open(self.file) as filehandle:
             for line in filehandle:
                 if line.startswith('>'):
                     id = line.rstrip().lstrip('>')
                     seq = next(filehandle).rstrip()
-                yield sequence_class(id, seq)    
+                    yield sequence_class(id, seq)
